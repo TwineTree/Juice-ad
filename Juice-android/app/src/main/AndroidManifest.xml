@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.twinetree.juice_android">
+    package="com.twinetree.juice">
 
     <application
         android:allowBackup="true"
