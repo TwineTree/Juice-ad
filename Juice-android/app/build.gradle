@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.twinetree.juice_android"
+        applicationId "com.twinetree.juice"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1

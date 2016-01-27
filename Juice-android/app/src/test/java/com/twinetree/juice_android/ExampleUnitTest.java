@@ -1,4 +1,4 @@
-package com.twinetree.juice_android;
+package com.twinetree.juice;
 
 import org.junit.Test;
 
