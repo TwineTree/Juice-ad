@@ -15,7 +15,7 @@
  * @license: Apache License 2.0
  */
 
-package com.andtinder;
+package com.twinetree.juice.external.swipeablecard;
 
 public class Utils {
 

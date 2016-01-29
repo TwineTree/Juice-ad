@@ -15,7 +15,7 @@
  * @license: Apache License 2.0
  */
 
-package com.andtinder.model;
+package com.twinetree.juice.external.swipeablecard.model;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

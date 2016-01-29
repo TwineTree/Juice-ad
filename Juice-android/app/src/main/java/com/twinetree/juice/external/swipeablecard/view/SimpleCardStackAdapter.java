@@ -1,4 +1,4 @@
-package com.andtinder.view;
+package com.twinetree.juice.external.swipeablecard.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.andtinder.R;
-import com.andtinder.model.CardModel;
+import com.twinetree.juice.R;
+import com.twinetree.juice.external.swipeablecard.model.CardModel;
 
 public final class SimpleCardStackAdapter extends CardStackAdapter {
 

@@ -15,7 +15,7 @@
  * @license: Apache License 2.0
  */
 
-package com.andtinder.model;
+package com.twinetree.juice.external.swipeablecard.model;
 
 public class Likes {
 	 public enum Like {

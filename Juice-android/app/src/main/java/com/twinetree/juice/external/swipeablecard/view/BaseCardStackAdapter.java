@@ -1,8 +1,8 @@
-package com.andtinder.view;
+package com.twinetree.juice.external.swipeablecard.view;
 
 import android.widget.BaseAdapter;
 
-import com.andtinder.model.CardModel;
+import com.twinetree.juice.external.swipeablecard.model.CardModel;
 
 import java.util.ArrayList;
 import java.util.Collection;

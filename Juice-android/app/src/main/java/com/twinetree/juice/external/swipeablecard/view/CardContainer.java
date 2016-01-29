@@ -1,4 +1,4 @@
-package com.andtinder.view;
+package com.twinetree.juice.external.swipeablecard.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -24,9 +24,9 @@ import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 
-import com.andtinder.R;
-import com.andtinder.model.CardModel;
-import com.andtinder.model.Orientations.Orientation;
+import com.twinetree.juice.R;
+import com.twinetree.juice.external.swipeablecard.model.CardModel;
+import com.twinetree.juice.external.swipeablecard.model.Orientations.Orientation;
 
 import java.util.Random;
 
@@ -72,7 +72,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
     public CardContainer(Context context) {
         super(context);
 
-        setOrientation(Orientation.Disordered);
+        setOrientation(Orientation.Ordered);
         setGravity(Gravity.CENTER);
         init();
 

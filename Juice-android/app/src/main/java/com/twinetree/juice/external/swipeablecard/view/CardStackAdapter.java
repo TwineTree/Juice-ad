@@ -1,12 +1,12 @@
-package com.andtinder.view;
+package com.twinetree.juice.external.swipeablecard.view;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.andtinder.R;
-import com.andtinder.model.CardModel;
+import com.twinetree.juice.R;
+import com.twinetree.juice.external.swipeablecard.model.CardModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +41,7 @@ public abstract class CardStackAdapter extends BaseCardStackAdapter {
 		View convertedCardView;
 		if (wrapper == null) {
 			wrapper = new FrameLayout(mContext);
-			wrapper.setBackgroundResource(R.drawable.card_bg);
+			wrapper.setBackgroundResource(R.mipmap.card_bg);
 			if (shouldFillCardBackground()) {
 				innerWrapper = new FrameLayout(mContext);
 				innerWrapper.setBackgroundColor(mContext.getResources().getColor(R.color.card_bg));
