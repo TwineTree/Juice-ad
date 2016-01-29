@@ -1,3 +1,17 @@
+/*      Copyright 2014 Enrique López Mañas
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.*/
+
 package com.twinetree.juice.external.swipeablecard.view;
 
 import android.animation.Animator;
@@ -27,6 +41,7 @@ import android.widget.ListAdapter;
 import com.twinetree.juice.R;
 import com.twinetree.juice.external.swipeablecard.model.CardModel;
 import com.twinetree.juice.external.swipeablecard.model.Orientations.Orientation;
+import com.twinetree.juice.ui.activity.MainActivity;
 
 import java.util.Random;
 
@@ -34,6 +49,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
     public static final int INVALID_POINTER_ID = -1;
     private int mActivePointerId = INVALID_POINTER_ID;
     private static final double DISORDERED_MAX_ROTATION_RADIANS = Math.PI / 64;
+    private static int count = 0;
     private int mNumberOfCards = -1;
     private final DataSetObserver mDataSetObserver = new DataSetObserver() {
         @Override
@@ -446,7 +462,8 @@ public class CardContainer extends AdapterView<ListAdapter> {
                 duration = Math.min(500, duration);
 
                 mTopCard = getChildAt(getChildCount() - 2);
-                CardModel cardModel = (CardModel)getAdapter().getItem(getChildCount() - 1);
+                CardModel cardModel = (CardModel)getAdapter().getItem(count);
+                count++;
 
                 if(mTopCard != null)
                     mTopCard.setLayerType(LAYER_TYPE_HARDWARE, null);
@@ -478,6 +495,7 @@ public class CardContainer extends AdapterView<ListAdapter> {
                                 onAnimationEnd(animation);
                             }
                         });
+
                 return true;
             } else
                 return false;
