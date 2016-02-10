@@ -1,83 +1,53 @@
 package com.twinetree.juice.ui.activity;
 
-import android.content.res.Resources;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.twinetree.juice.R;
-import com.twinetree.juice.external.swipeablecard.model.CardModel;
-import com.twinetree.juice.external.swipeablecard.view.CardContainer;
-import com.twinetree.juice.external.swipeablecard.view.SimpleCardStackAdapter;
+import com.twinetree.juice.ui.fragments.AMainFragment;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
 
-    private CardContainer mCardContainer;
+public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener {
+
+    private String[] options;
+    private DrawerLayout drawerLayout;
+    private ListView drawerList;
+    private FragmentManager fragmentManager;
+    private ActionBarDrawerToggle drawerToggle;
+
+    private final String MAIN_FRAGMENT_TAG = "MAIN-FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Resources r = getResources();
+        options = getResources().getStringArray(R.array.drawer_list);
+        fragmentManager = getSupportFragmentManager();
 
-        SimpleCardStackAdapter adapter = new SimpleCardStackAdapter(this);
+        drawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer);
+        drawerList = (ListView) findViewById(R.id.activity_main_drawer_list);
 
-        mCardContainer = (CardContainer) findViewById(R.id.layoutview);
+        fragmentManager.beginTransaction()
+                .add(R.id.activity_main_frame, new AMainFragment(), MAIN_FRAGMENT_TAG)
+                .commit();
 
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
+        drawerList.setAdapter(new ArrayAdapter<>(this, R.layout.main_drawer_list_item, options));
 
-        CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
-        cardModel.setOnClickListener(new CardModel.OnClickListener() {
-            @Override
-            public void OnClickListener() {
-                Log.i("Swipeable Cards", "I am pressing the card");
-            }
-        });
+        drawerList.setOnItemClickListener(this);
+    }
 
-        cardModel.setOnCardDismissedListener(new CardModel.OnCardDismissedListener() {
-            @Override
-            public void onLike() {
-                Log.i("Swipeable Cards", "I like the card");
-            }
-
-            @Override
-            public void onDislike() {
-                Log.i("Swipeable Cards", "I dislike the card");
-            }
-        });
-
-        adapter.add(cardModel);
-
-        mCardContainer.setAdapter(adapter);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(this, options[position], Toast.LENGTH_SHORT).show();
     }
 }
