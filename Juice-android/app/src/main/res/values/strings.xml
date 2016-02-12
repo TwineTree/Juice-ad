@@ -2,9 +2,14 @@
     <string name="app_name">Juice</string>
 
     // App related strings
+    <string name="amain_navigation_profile">Profile</string>
+    <string name="amain_navigation_questions">My Questions</string>
+    <string name="amain_navigation_log_out">Log Out</string>
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
     <array name="drawer_list">
         <item>Profile</item>
-        <item>Questions</item>
+        <item>My Questions</item>
         <item>Log Out</item>
     </array>
     <string name="facebook_app_id">448377858679198</string>

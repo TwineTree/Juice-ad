@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.twinetree.juice.R;
+import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
 import com.twinetree.juice.ui.fragments.AMainFragment;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                 .add(R.id.activity_main_frame, new AMainFragment(), MAIN_FRAGMENT_TAG)
                 .commit();
 
-        drawerList.setAdapter(new ArrayAdapter<>(this, R.layout.main_drawer_list_item, options));
+        drawerList.setAdapter(new AMainNavigationListAdapter(this));
 
         drawerList.setOnItemClickListener(this);
     }
