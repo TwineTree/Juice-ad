@@ -5,6 +5,7 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.twinetree.juice.R;
+import com.twinetree.juice.datasets.User;
+import com.twinetree.juice.util.GoogleUtil;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -118,7 +121,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void getProfileInformation() {
-        Toast.makeText(LoginActivity.this, "Google SignIn Success", Toast.LENGTH_SHORT).show();
+        try {
+            if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
+                String accountName = Plus.AccountApi.getAccountName(googleApiClient);
+                User user = new User(this);
+                user.setAccountName(accountName);
+                GoogleUtil util = new GoogleUtil(this);
+                util.getAccessToken();
+            }
+        }
+        catch (Exception e) {
+            Log.i("jbefb", e.getMessage());
+            e.printStackTrace();
+        }
+        //Toast.makeText(LoginActivity.this, "Google SignIn Success", Toast.LENGTH_SHORT).show();
     }
 
     @Override
