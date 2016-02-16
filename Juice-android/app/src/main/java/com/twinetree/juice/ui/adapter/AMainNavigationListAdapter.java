@@ -22,7 +22,7 @@ public class AMainNavigationListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -37,6 +37,9 @@ public class AMainNavigationListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        if (position == 0) {
+            return inflater.inflate(R.layout.header_layout, null);
+        }
         View view = inflater.inflate(R.layout.amain_navigation_list_item, null);
         Holder holder = new Holder();
 
@@ -44,15 +47,15 @@ public class AMainNavigationListAdapter extends BaseAdapter {
         holder.text = (TextView) view.findViewById(R.id.amain_navigation_list_item_text);
 
         switch (position) {
-            case 0:
+            case 1:
                 holder.text.setText(options[0]);
                 holder.image.setImageResource(R.mipmap.ic_account_circle_black_24dp);
                 break;
-            case 1:
+            case 2:
                 holder.text.setText(options[1]);
                 holder.image.setImageResource(R.mipmap.ic_question_answer_black_24dp);
                 break;
-            case 2:
+            case 3:
                 holder.text.setText(options[0]);
                 holder.image.setImageResource(R.mipmap.ic_exit_to_app_black_24dp);
                 break;
