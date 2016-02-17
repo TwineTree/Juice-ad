@@ -49,6 +49,6 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, options[position], Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, options[position-1], Toast.LENGTH_SHORT).show();
     }
 }

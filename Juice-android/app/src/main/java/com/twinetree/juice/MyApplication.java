@@ -7,15 +7,21 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MyApplication extends Application {
 
+    public static RequestQueue queue;
+
     @Override
     public void onCreate() {
         super.onCreate();
         super.onCreate();
+        queue = Volley.newRequestQueue(this);
         printHashKey();
     }
 

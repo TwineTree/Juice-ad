@@ -11,11 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.twinetree.juice.MyApplication;
 import com.twinetree.juice.R;
+import com.twinetree.juice.api.ApiResponse;
+import com.twinetree.juice.api.Url;
 import com.twinetree.juice.external.swipeablecard.model.CardModel;
 import com.twinetree.juice.external.swipeablecard.view.CardContainer;
 import com.twinetree.juice.external.swipeablecard.view.SimpleCardStackAdapter;
+import com.twinetree.juice.util.BearerRequest;
+import com.twinetree.juice.util.NetworkUtil;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +35,7 @@ import com.twinetree.juice.external.swipeablecard.view.SimpleCardStackAdapter;
 public class AMainFragment extends Fragment {
 
     private CardContainer mCardContainer;
+    private ProgressBar progressBar;
 
     public AMainFragment() {
         // Required empty public constructor
@@ -41,19 +54,29 @@ public class AMainFragment extends Fragment {
 
         Resources r = getResources();
 
-        SimpleCardStackAdapter adapter = new SimpleCardStackAdapter(getActivity().getApplicationContext());
+        final SimpleCardStackAdapter adapter = new SimpleCardStackAdapter(getActivity().getApplicationContext());
 
         mCardContainer = (CardContainer) getActivity().findViewById(R.id.fragment_amain_layout);
+        progressBar = (ProgressBar) getActivity().findViewById(R.id.fragment_amain_loading);
 
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title4", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title5", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title6", "Description goes here", r.getDrawable(R.drawable.picture3)));
-        adapter.add(new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1)));
-        adapter.add(new CardModel("Title2", "Description goes here", r.getDrawable(R.drawable.picture2)));
-        adapter.add(new CardModel("Title3", "Description goes here", r.getDrawable(R.drawable.picture3)));
+        if (NetworkUtil.isConnected(getContext())) {
+            progressBar.setVisibility(View.VISIBLE);
+            BearerRequest request = new BearerRequest(Request.Method.GET, Url.getQuestions(0, 10),
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            progressBar.setVisibility(View.GONE);
+                            ApiResponse.setQuestionsResponse(response);
+                            loadAdapter(adapter);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+            MyApplication.queue.add(request);
+        }
 
         CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
         cardModel.setOnClickListener(new CardModel.OnClickListener() {
@@ -77,6 +100,24 @@ public class AMainFragment extends Fragment {
 
         adapter.add(cardModel);
 
-        mCardContainer.setAdapter(adapter);
+    }
+
+    private void loadAdapter(SimpleCardStackAdapter adapter) {
+        try {
+            JSONObject object = new JSONObject(ApiResponse.getQuestionsResponse());
+            JSONArray result = object.getJSONArray("result");
+
+            for (int i=0; i<result.length(); i++) {
+                JSONObject item = result.getJSONObject(i);
+
+                String questionText = item.getString("questionText");
+                adapter.add(new CardModel(questionText, "Description goes here",
+                        getResources().getDrawable(R.drawable.picture3)));
+            }
+            mCardContainer.setAdapter(adapter);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

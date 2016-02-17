@@ -5,5 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="card_bg">#EBEBEB</color>
     <color name="card_outline">#D0D0CE</color>
+
     <color name="BASE">#EDE7E9</color>
+    <color name="GREEN">#71D7A0</color>
+    <color name="STATUS_GREEN">#37c478</color>
 </resources>
