@@ -2,7 +2,8 @@ package com.twinetree.juice.api;
 
 public class Url {
 
-    public static String accessToken = "Sc7r2qS-On4K-vP1D4ZatGj8yNHDj7S33E33yDS51eW9osyl7ztxU9KM_p7meZE4mSQFjdmbPZLaumH-WhcOoBxcV7mfXZ8dMeXU41gL1dyJeP67y10z4LEwhx8W2EtL_pSJulmCfbKwRrstd9hkHRbQXA_xuHiA7feV5mQqN5vKBcSmIWv7cSFUxoZA8_gBS-5mNfbLSUdr1TaVs6EhkrTqBpSSOsagYDAtxGXit9f2fWt3Bg9-8FxniKRzCShrIwon2yCF2L8sqzhpNgTjozNkPL-uOE0WW1yfGkBKGJnP5SrtLfN-X7ZQ3_8FWXaY97B5WmWzVK6Z_qvTZzpY31nK809_fLLVWlVSl_CMjpgC2lY9OuLHOYvEApvF3kjV6o-nwIx-z9ktaoKSn_DsvgikXjik89sO26u05tC5U-7DaRE4dCSxlboPPJ7CALMm";
+    public static String accessToken = "r_Md2G2JE7OptO0DRokaxVlanzV6arLPUmfZwdFC-dUYq4ngaUK6A5re9uXmSFtj9HQ44TlM5cI1M3GFz3poC6ibxl6ksgwBX9WzO2Y7izcRBNaKa55ucF0Ofp3PAiIoZt5bqtrvqp3EjnQI6ZPSTDQiIWsPIWiJwQNxvRJXf5l8CIa5jURpdcmpWhhte3eY40I8VtASoP2UH-QDgPD7uqZMvUkthh86cMg94YliulWdhK9sGTY-QYAxuoZZ9cUNjFOdPpVvLKcPhAgIb3LypJ6dV28o97806EJ_OqZbjjL4R-Te5U-d7TolXbwKNuH1RbAhNvoEBjsyTd0jZB6f1He_VZzMQ1v0udlRUbQ16AyeUcfOWGq725ExumhlhInh8bgPjxyfsWu3m0evPshKjCei9I7U-Aiq5u6PteTPd-kam5hurT7a-8V5_sApUmzS";
+
     public static String getQuestions(int pageIndex, int pageSize) {
         return "http://joos.azurewebsites.net/api/question/get?pageIndex=" + Integer.toString(pageIndex)
         + "&pageSize=" + Integer.toString(pageSize);

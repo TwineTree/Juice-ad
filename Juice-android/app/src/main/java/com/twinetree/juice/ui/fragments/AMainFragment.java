@@ -78,7 +78,7 @@ public class AMainFragment extends Fragment {
             MyApplication.queue.add(request);
         }
 
-        CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
+        /*CardModel cardModel = new CardModel("Title1", "Description goes here", r.getDrawable(R.drawable.picture1));
         cardModel.setOnClickListener(new CardModel.OnClickListener() {
             @Override
             public void OnClickListener() {
@@ -97,9 +97,8 @@ public class AMainFragment extends Fragment {
                 Log.i("Swipeable Cards", "I dislike the card");
             }
         });
-
         adapter.add(cardModel);
-
+*/
     }
 
     private void loadAdapter(SimpleCardStackAdapter adapter) {
@@ -111,8 +110,7 @@ public class AMainFragment extends Fragment {
                 JSONObject item = result.getJSONObject(i);
 
                 String questionText = item.getString("questionText");
-                adapter.add(new CardModel(questionText, "Description goes here",
-                        getResources().getDrawable(R.drawable.picture3)));
+                adapter.add(new CardModel(questionText, "", ""));
             }
             mCardContainer.setAdapter(adapter);
         }

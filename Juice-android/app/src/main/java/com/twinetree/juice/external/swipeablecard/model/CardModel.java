@@ -24,11 +24,9 @@ import android.graphics.drawable.Drawable;
 
 public class CardModel {
 
-	private String   title;
-	private String   description;
-	private Drawable cardImageDrawable;
-	private Drawable cardLikeImageDrawable;
-	private Drawable cardDislikeImageDrawable;
+	private String title;
+	private String imageUrl;
+	private String videoUrl;
 
     private OnCardDismissedListener mOnCardDismissedListener = null;
 
@@ -44,60 +42,38 @@ public class CardModel {
     }
 
 	public CardModel() {
-		this(null, null, (Drawable)null);
+		this(null, null, (String)null);
 	}
 
-	public CardModel(String title, String description, Drawable cardImage) {
+	public CardModel(String title, String imageUrl, String videoUrl) {
 		this.title = title;
-		this.description = description;
-		this.cardImageDrawable = cardImage;
-	}
-
-	public CardModel(String title, String description, Bitmap cardImage) {
-		this.title = title;
-		this.description = description;
-		this.cardImageDrawable = new BitmapDrawable(null, cardImage);
+		this.imageUrl = imageUrl;
+		this.videoUrl = videoUrl;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public String getDescription() {
-		return description;
-	}
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Drawable getCardImageDrawable() {
-		return cardImageDrawable;
-	}
-
-	public void setCardImageDrawable(Drawable cardImageDrawable) {
-		this.cardImageDrawable = cardImageDrawable;
-	}
-
-	public Drawable getCardLikeImageDrawable() {
-		return cardLikeImageDrawable;
-	}
-
-	public void setCardLikeImageDrawable(Drawable cardLikeImageDrawable) {
-		this.cardLikeImageDrawable = cardLikeImageDrawable;
-	}
-
-	public Drawable getCardDislikeImageDrawable() {
-		return cardDislikeImageDrawable;
-	}
-
-	public void setCardDislikeImageDrawable(Drawable cardDislikeImageDrawable) {
-		this.cardDislikeImageDrawable = cardDislikeImageDrawable;
-	}
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
 
     public void setOnCardDismissedListener( OnCardDismissedListener listener ) {
         this.mOnCardDismissedListener = listener;
