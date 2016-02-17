@@ -5,6 +5,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.twinetree.juice.R;
 import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
 import com.twinetree.juice.ui.fragments.AMainFragment;
+import com.twinetree.juice.ui.fragments.MyQuestionsFragment;
 
 import java.util.List;
 
@@ -49,6 +51,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, options[position-1], Toast.LENGTH_SHORT).show();
+        switch (position) {
+            case 2:
+                fragmentManager.beginTransaction()
+                        .add(R.id.activity_main_frame, new MyQuestionsFragment(), MAIN_FRAGMENT_TAG)
+                        .addToBackStack(null)
+                        .commit();
+                drawerLayout.closeDrawer(Gravity.LEFT);
+                break;
+        }
     }
 }
