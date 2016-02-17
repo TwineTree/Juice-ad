@@ -3,7 +3,7 @@ package com.twinetree.juice.ui.fragments;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,7 +59,7 @@ public class AMainFragment extends Fragment {
         mCardContainer = (CardContainer) getActivity().findViewById(R.id.fragment_amain_layout);
         progressBar = (ProgressBar) getActivity().findViewById(R.id.fragment_amain_loading);
 
-        if (NetworkUtil.isConnected(getContext())) {
+        if (NetworkUtil.isConnected(getActivity().getApplicationContext())) {
             progressBar.setVisibility(View.VISIBLE);
             BearerRequest request = new BearerRequest(Request.Method.GET, Url.getQuestions(0, 10),
                     new Response.Listener<String>() {

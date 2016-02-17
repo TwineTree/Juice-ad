@@ -16,4 +16,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="question_input_dialog_question_text">What\'s on your mind?</string>
+    <string name="question_input_dialog_question_pos_text">Haan</string>
+    <string name="question_input_dialog_question_neg_text">Naa</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>
