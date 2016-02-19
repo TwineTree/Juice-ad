@@ -21,4 +21,7 @@
     <string name="question_input_dialog_question_neg_text">Naa</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="select_image">Select Image</string>
+    <string name="get_image_tag">get_image</string>
+    <string name="questions_input_tag">question_input</string>
 </resources>

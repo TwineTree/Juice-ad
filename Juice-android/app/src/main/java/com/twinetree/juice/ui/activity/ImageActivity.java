@@ -1,51 +1,36 @@
 package com.twinetree.juice.ui.activity;
 
-import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.twinetree.juice.MyApplication;
 import com.twinetree.juice.R;
 import com.twinetree.juice.api.Url;
-import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
-import com.twinetree.juice.ui.fragments.AMainFragment;
-import com.twinetree.juice.ui.fragments.MyQuestionsFragment;
 import com.twinetree.juice.ui.fragments.QuestionInputDialogFragment;
 import com.twinetree.juice.util.BearerRequest;
 import com.twinetree.juice.util.JsonBearerRequest;
 
-import org.apache.http.HttpVersion;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener,
-        QuestionInputDialogFragment.Callback {
+public class ImageActivity extends AppCompatActivity implements View.OnClickListener,
+            QuestionInputDialogFragment.Callback {
 
     private final String QUESTION_TEXT_TAG = "QUESTION-TEXT";
     private final String POSITIVE_TEXT_TAG = "POSITIVE-TEXT";
@@ -53,50 +38,52 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     private final String IMAGE_URL_TAG = "IMAGE-URL";
     private final String VIDEO_URL_TAG = "VIDEO-URL";
 
-    private String[] options;
-    private DrawerLayout drawerLayout;
-    private ListView drawerList;
-    private FragmentManager fragmentManager;
-    private ActionBarDrawerToggle drawerToggle;
-
-    private final String MAIN_FRAGMENT_TAG = "MAIN-FRAGMENT";
+    private ImageView image;
+    private ImageButton cancel;
+    private ImageButton done;
+    private Bundle extras;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_image);
 
-        options = getResources().getStringArray(R.array.drawer_list);
-        fragmentManager = getFragmentManager();
+        extras = getIntent().getExtras();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer);
-        drawerList = (ListView) findViewById(R.id.activity_main_drawer_list);
+        bitmap = (Bitmap) extras.get(getResources().getString(R.string.get_image_tag));
+        image = (ImageView) findViewById(R.id.activity_image_image);
+        cancel = (ImageButton) findViewById(R.id.activity_image_cancel);
+        done = (ImageButton) findViewById(R.id.activity_image_done);
 
-        fragmentManager.beginTransaction()
-                .add(R.id.activity_main_frame, new AMainFragment(), MAIN_FRAGMENT_TAG)
-                .commit();
+        image.setImageBitmap(bitmap);
 
-        drawerList.setAdapter(new AMainNavigationListAdapter(this));
-
-        drawerList.setOnItemClickListener(this);
+        cancel.setOnClickListener(this);
+        done.setOnClickListener(this);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 2:
-                fragmentManager.beginTransaction()
-                        .add(R.id.activity_main_frame, new MyQuestionsFragment(), MAIN_FRAGMENT_TAG)
-                        .addToBackStack(null)
-                        .commit();
-                drawerLayout.closeDrawer(Gravity.LEFT);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.activity_image_cancel:
+                finish();
+                break;
+            case R.id.activity_image_done:
+                QuestionInputDialogFragment dialogFragment = QuestionInputDialogFragment.newInstance(
+                        getResources().getString(R.string.get_image_tag), "", extras);
+                dialogFragment.show(getFragmentManager(),
+                        getResources().getString(R.string.questions_input_tag));
                 break;
         }
     }
 
     @Override
-    public void onSuccessfulInput(String questionText, String positiveText,
-                                  String negativeText, String imageUrl, String videoUrl, Bitmap bitmap) {
+    public void onSuccessfulInput(String questionText,
+                                  String positiveText,
+                                  String negativeText,
+                                  String imageUrl,
+                                  String videoUrl,
+                                  Bitmap bitmap) {
         try {
 
             if (imageUrl.equals(getResources().getString(R.string.get_image_tag))) {
@@ -121,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
-                                Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ImageActivity.this, "Success", Toast.LENGTH_SHORT).show();
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -139,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     private void getSassUrl(final Bitmap bitmap, final Bundle args) {
         final String blobName = UUID.randomUUID().toString() + ".png";
+        Log.i("hvqwhj", blobName);
+        args.putString(IMAGE_URL_TAG, "https://twinetree.blob.core.windows.net/joos/" + blobName);
 
         BearerRequest request = new BearerRequest(Request.Method.GET, Url.sassUrl(blobName),
                 new Response.Listener<String>() {
@@ -151,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
                             File file = new File(Environment.getExternalStorageDirectory() +
-                                        File.separator + blobName);
+                                    File.separator + blobName);
                             file.createNewFile();
                             FileOutputStream fo = new FileOutputStream(file);
                             fo.write(bytes.toByteArray());
@@ -177,13 +166,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                             final File image) {
 
         Ion.with(this)
-                .load(result)
-                .setMultipartFile("", "image/png", image)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
+                .load("PUT", result)
+                .setHeader("x-ms-blob-type", "BlockBlob")
+                .setFileBody(image)
+                .asString()
+                .setCallback(new FutureCallback<String>() {
                     @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        Toast.makeText(MainActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                    public void onCompleted(Exception e, String result) {
+                        Toast.makeText(ImageActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
                         image.delete();
                         postQuestion(args);
                     }
@@ -203,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ImageActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
                 @Override

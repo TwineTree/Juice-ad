@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,22 +16,22 @@ import com.twinetree.juice.util.StringUtil;
 
 public class QuestionInputDialogFragment extends DialogFragment {
 
-    private static final String QUESTION_TEXT_TAG = "QUESTION-TEXT";
-    private static final String POSITIVE_TEXT_TAG = "POSITIVE-TEXT";
-    private static final String NEGATIVE_TEXT_TAG = "NEGATIVE-TEXT";
+    private static final String IMAGE_URL_TAG = "IMAGE-URL";
+    private static final String VIDEO_URL_TAG = "VIDEO_URL";
+    private static final String BUNDLE_TAG = "BUNDLE";
 
     private static boolean closeDialog = true;
 
-    public static QuestionInputDialogFragment newInstance(String questionText,
-                                                          String positiveText,
-                                                          String negativeText) {
+    public static QuestionInputDialogFragment newInstance(String imageUrl,
+                                                          String videoUrl,
+                                                          Bundle extras) {
 
         QuestionInputDialogFragment dialog = new QuestionInputDialogFragment();
         Bundle args = new Bundle();
 
-        args.putString(QUESTION_TEXT_TAG, questionText);
-        args.putString(POSITIVE_TEXT_TAG, positiveText);
-        args.putString(NEGATIVE_TEXT_TAG, negativeText);
+        args.putString(IMAGE_URL_TAG, imageUrl);
+        args.putString(VIDEO_URL_TAG, videoUrl);
+        args.putBundle(BUNDLE_TAG, extras);
 
         dialog.setArguments(args);
         return dialog;
@@ -52,10 +53,18 @@ public class QuestionInputDialogFragment extends DialogFragment {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle args = getArguments();
+
                 String questionText = questionInput.getText().toString();
                 String positiveText = positiveInput.getText().toString();
                 String negativeText = negativeInput.getText().toString();
-
+                String imageUrl = args.getString(IMAGE_URL_TAG, "");
+                String videoUrl = args.getString(VIDEO_URL_TAG, "");
+                Bundle extras = args.getBundle(BUNDLE_TAG);
+                Bitmap bitmap = null;
+                if (extras != null) {
+                    bitmap = (Bitmap) extras.get(getResources().getString(R.string.get_image_tag));
+                }
 
                 if (StringUtil.isNullOrEmpty(questionText)) {
                     closeDialog = false;
@@ -69,7 +78,8 @@ public class QuestionInputDialogFragment extends DialogFragment {
                 }
                 if (closeDialog) {
                     if (getActivity() instanceof Callback) {
-                        ((Callback)getActivity()).onSuccessfulInput(questionText, positiveText, negativeText);
+                        ((Callback)getActivity()).onSuccessfulInput(questionText, positiveText,
+                                negativeText, imageUrl, videoUrl, bitmap);
                         getDialog().cancel();
                     }
                 }
@@ -80,6 +90,7 @@ public class QuestionInputDialogFragment extends DialogFragment {
     }
 
     public interface Callback {
-        void onSuccessfulInput(String questionText, String positiveText, String negativeText);
+        void onSuccessfulInput(String questionText, String positiveText, String negativeText,
+                               String imageUrl, String videoUrl, Bitmap bitmap);
     }
 }

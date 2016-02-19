@@ -1,8 +1,13 @@
 package com.twinetree.juice.ui.fragments;
 
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +22,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.twinetree.juice.MyApplication;
 import com.twinetree.juice.R;
 import com.twinetree.juice.api.Url;
+import com.twinetree.juice.ui.activity.ImageActivity;
 import com.twinetree.juice.util.JsonBearerRequest;
 
 import org.json.JSONObject;
@@ -26,8 +32,10 @@ import org.json.JSONObject;
  */
 public class MyQuestionsFragment extends Fragment implements View.OnClickListener {
 
+    private final int IMAGE_CAPTURE_ID = 0;
+
     private RecyclerView questionList;
-    private FloatingActionButton text;
+    private FloatingActionButton text, image;
 
     public MyQuestionsFragment() {
         // Required empty public constructor
@@ -45,14 +53,18 @@ public class MyQuestionsFragment extends Fragment implements View.OnClickListene
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        questionList = (RecyclerView) getActivity().findViewById(R.id.fragment_my_questions_list);
-        text = (FloatingActionButton) getActivity().findViewById(R.id.menu_item_text);
+        Activity a = getActivity();
+
+        questionList = (RecyclerView) a.findViewById(R.id.fragment_my_questions_list);
+        text = (FloatingActionButton) a.findViewById(R.id.menu_item_text);
+        image = (FloatingActionButton) a.findViewById(R.id.menu_item_image);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         questionList.setLayoutManager(layoutManager);
 
         text.setOnClickListener(this);
+        image.setOnClickListener(this);
     }
 
     @Override
@@ -61,6 +73,24 @@ public class MyQuestionsFragment extends Fragment implements View.OnClickListene
             case R.id.menu_item_text:
                 new QuestionInputDialogFragment().show(getFragmentManager(), "Dialog");
                 break;
+            case R.id.menu_item_image:
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, IMAGE_CAPTURE_ID);
+                }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IMAGE_CAPTURE_ID && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+
+            Bitmap bitmap = (Bitmap) extras.get("data");
+
+            Intent imageIntent = new Intent(getActivity().getApplicationContext(), ImageActivity.class);
+            imageIntent.putExtra(getResources().getString(R.string.get_image_tag), bitmap);
+            startActivity(imageIntent);
         }
     }
 }
