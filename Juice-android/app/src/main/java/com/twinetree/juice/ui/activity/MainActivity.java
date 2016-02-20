@@ -2,6 +2,7 @@ package com.twinetree.juice.ui.activity;
 
 import android.app.FragmentManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     @Override
     public void onSuccessfulInput(String questionText, String positiveText,
-                                  String negativeText, String imageUrl, String videoUrl, Bitmap bitmap) {
+                                  String negativeText, String imageUrl, String videoUrl, Bitmap bitmap,
+                                  Uri uri) {
         try {
 
             if (imageUrl.equals(getResources().getString(R.string.get_image_tag))) {

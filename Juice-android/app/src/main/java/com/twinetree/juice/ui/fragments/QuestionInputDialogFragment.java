@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,16 @@ import com.twinetree.juice.util.StringUtil;
 public class QuestionInputDialogFragment extends DialogFragment {
 
     private static final String IMAGE_URL_TAG = "IMAGE-URL";
-    private static final String VIDEO_URL_TAG = "VIDEO_URL";
+    private static final String VIDEO_URL_TAG = "VIDEO-URL";
     private static final String BUNDLE_TAG = "BUNDLE";
+    private static final String VIDEO_URI_TAG = "VIDEO-URI";
 
     private static boolean closeDialog = true;
 
     public static QuestionInputDialogFragment newInstance(String imageUrl,
                                                           String videoUrl,
-                                                          Bundle extras) {
+                                                          Bundle extras,
+                                                          Uri videoUri) {
 
         QuestionInputDialogFragment dialog = new QuestionInputDialogFragment();
         Bundle args = new Bundle();
@@ -32,6 +35,7 @@ public class QuestionInputDialogFragment extends DialogFragment {
         args.putString(IMAGE_URL_TAG, imageUrl);
         args.putString(VIDEO_URL_TAG, videoUrl);
         args.putBundle(BUNDLE_TAG, extras);
+        args.putString(VIDEO_URI_TAG, videoUri.toString());
 
         dialog.setArguments(args);
         return dialog;
@@ -61,7 +65,9 @@ public class QuestionInputDialogFragment extends DialogFragment {
                 String imageUrl = args.getString(IMAGE_URL_TAG, "");
                 String videoUrl = args.getString(VIDEO_URL_TAG, "");
                 Bundle extras = args.getBundle(BUNDLE_TAG);
+                Uri videoUri = Uri.parse(args.getString(VIDEO_URI_TAG));
                 Bitmap bitmap = null;
+
                 if (extras != null) {
                     bitmap = (Bitmap) extras.get(getResources().getString(R.string.get_image_tag));
                 }
@@ -79,7 +85,7 @@ public class QuestionInputDialogFragment extends DialogFragment {
                 if (closeDialog) {
                     if (getActivity() instanceof Callback) {
                         ((Callback)getActivity()).onSuccessfulInput(questionText, positiveText,
-                                negativeText, imageUrl, videoUrl, bitmap);
+                                negativeText, imageUrl, videoUrl, bitmap, videoUri);
                         getDialog().cancel();
                     }
                 }
@@ -91,6 +97,6 @@ public class QuestionInputDialogFragment extends DialogFragment {
 
     public interface Callback {
         void onSuccessfulInput(String questionText, String positiveText, String negativeText,
-                               String imageUrl, String videoUrl, Bitmap bitmap);
+                               String imageUrl, String videoUrl, Bitmap bitmap, Uri videoUri);
     }
 }

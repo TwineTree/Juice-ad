@@ -24,4 +24,5 @@
     <string name="select_image">Select Image</string>
     <string name="get_image_tag">get_image</string>
     <string name="questions_input_tag">question_input</string>
+    <string name="get_video_tag">get_video</string>
 </resources>
