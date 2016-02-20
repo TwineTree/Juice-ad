@@ -25,4 +25,7 @@
     <string name="get_image_tag">get_image</string>
     <string name="questions_input_tag">question_input</string>
     <string name="get_video_tag">get_video</string>
+    <string name="activity_login_auth_token">get token</string>
+    <string name="google_api_client">google_api_client</string>
+    <string name="google_api_client_file">google_api_client_file</string>
 </resources>

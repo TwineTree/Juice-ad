@@ -1,92 +1,63 @@
 package com.twinetree.juice.util;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
-import com.google.android.gms.common.Scopes;
-import com.twinetree.juice.datasets.User;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.twinetree.juice.R;
+import com.twinetree.juice.ui.activity.MainActivity;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.ObjectInputStream;
 import java.util.concurrent.ExecutionException;
 
-public class GoogleUtil extends Activity {
+public class GoogleUtil {
 
-    private static final String TAG = "RetrieveAccessToken";
-    private static final int REQ_SIGN_IN_REQUIRED = 55664;
+    private static String authToken;
+    private static Context context;
 
-    private Context context;
-    private String accessToken;
-    private User user;
+    private final String TAG = "fkbqef";
 
-    public GoogleUtil(Context context) {
-        this.context = context;
-        user = new User(context);
-    }
-
-    public void getAccessToken() {
-        //try {
-            //new RetrieveTokenTask().execute(user.getAccountName());
-            /*return accessToken;
+    public String getAuthToken(Context c) {
+        context = c;
+        GoogleApiClient apiClient = getApiClient(context);
+        try {
+            new GoogleAuthTokenTask().execute(Plus.AccountApi.getAccountName(apiClient)).get();
+            return authToken;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        return "";*/
-
-
-        new TestTask().execute("");
+        return "";
     }
 
-    private class TestTask extends AsyncTask<String, Void, String> {
+    private static GoogleApiClient getApiClient(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(context.getResources().getString(R.string.google_api_client), Context.MODE_PRIVATE);
+        String fileName = preferences.getString(context.getResources().getString(R.string.google_api_client_file), "");
 
-        @Override
-        protected String doInBackground(String... params) {
-            String accessToken = "";
-            try {
-                URL url = new URL("https://www.googleapis.com/oauth2/v1/userinfo");
-                // get Access Token with Scopes.PLUS_PROFILE
-                String sAccessToken;
-                sAccessToken = GoogleAuthUtil.getToken(
-                        context,
-                        user.getAccountName() + "",
-                        "oauth2:"
-                                + Scopes.PLUS_LOGIN + " "
-                                + "https://www.googleapis.com/auth/plus.profile.emails.read");
-                accessToken = sAccessToken;
-            } catch (UserRecoverableAuthException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                Intent recover = e.getIntent();
-                startActivityForResult(recover, 125);
-                return "";
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (GoogleAuthException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return accessToken;
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            ObjectInputStream is = new ObjectInputStream(fis);
+            GoogleApiClient apiClient = (GoogleApiClient) is.readObject();
+            is.close();
+            fis.close();
+            return apiClient;
         }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Log.i("qifbiqef", s);
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
-    private class RetrieveTokenTask extends AsyncTask<String, Void, String> {
+    private class GoogleAuthTokenTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -95,14 +66,11 @@ public class GoogleUtil extends Activity {
             String token = null;
             try {
                 token = GoogleAuthUtil.getToken(context, accountName, scopes);
-                Log.i("fcq", "qwf");
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
             } catch (UserRecoverableAuthException e) {
-                startActivityForResult(e.getIntent(), REQ_SIGN_IN_REQUIRED);
-            } catch (GoogleAuthException e) {
                 Log.e(TAG, e.getMessage());
-            } catch (Exception e) {
+            } catch (GoogleAuthException e) {
                 Log.e(TAG, e.getMessage());
             }
             return token;
@@ -111,8 +79,8 @@ public class GoogleUtil extends Activity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            accessToken = s;
-            Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+            authToken = s;
+            Log.i(TAG, s);
         }
     }
 }
