@@ -16,12 +16,18 @@ public class AMainNavigationListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private String[] options;
+    private String name;
+    private String email;
+    private String profileUrl;
     private Context context;
 
-    public AMainNavigationListAdapter(Context context) {
+    public AMainNavigationListAdapter(String options[], String name, String email, String profileUrl, Context context) {
+        this.options = options;
+        this.name = name;
+        this.email = email;
+        this.profileUrl = profileUrl;
         this.context = context;
         inflater = LayoutInflater.from(context);
-        options = context.getResources().getStringArray(R.array.drawer_list);
     }
 
     @Override

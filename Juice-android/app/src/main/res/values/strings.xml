@@ -28,4 +28,6 @@
     <string name="activity_login_auth_token">get token</string>
     <string name="google_api_client">google_api_client</string>
     <string name="google_api_client_file">google_api_client_file</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>

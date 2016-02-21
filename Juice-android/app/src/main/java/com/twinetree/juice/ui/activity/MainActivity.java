@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import com.twinetree.juice.R;
 import com.twinetree.juice.api.Url;
 import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
 import com.twinetree.juice.ui.fragments.AMainFragment;
+import com.twinetree.juice.ui.fragments.AMainNavigationFragment;
 import com.twinetree.juice.ui.fragments.MyQuestionsFragment;
 import com.twinetree.juice.ui.fragments.QuestionInputDialogFragment;
 import com.twinetree.juice.util.BearerRequest;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     private ListView drawerList;
     private FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
+    private Toolbar toolbar;
 
     private final String MAIN_FRAGMENT_TAG = "MAIN-FRAGMENT";
 
@@ -70,16 +73,30 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         options = getResources().getStringArray(R.array.drawer_list);
         fragmentManager = getFragmentManager();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.activity_main_drawer);
-        drawerList = (ListView) findViewById(R.id.activity_main_drawer_list);
-
         fragmentManager.beginTransaction()
                 .add(R.id.activity_main_frame, new AMainFragment(), MAIN_FRAGMENT_TAG)
                 .commit();
 
-        drawerList.setAdapter(new AMainNavigationListAdapter(this));
+        initToolbar();
+        initDrawerFragment();
+    }
 
-        drawerList.setOnItemClickListener(this);
+    private void initDrawerFragment() {
+        AMainNavigationFragment drawerFragment = (AMainNavigationFragment)
+                getSupportFragmentManager().findFragmentById(R.id.activity_main_navigation_fragment);
+        drawerFragment.setUp(R.id.activity_main_navigation_fragment,
+                (DrawerLayout) findViewById(R.id.activity_main_drawer),
+                toolbar,
+                "Rishabh Makhija",
+                "rishabh.makhija07@gmail.com",
+                "",
+                this);
+    }
+
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
     }
 
     @Override
