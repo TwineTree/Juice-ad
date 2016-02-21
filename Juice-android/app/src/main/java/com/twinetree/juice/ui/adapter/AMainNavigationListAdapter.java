@@ -1,6 +1,7 @@
 package com.twinetree.juice.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.twinetree.juice.R;
+import com.twinetree.juice.util.FontsUtil;
 
 public class AMainNavigationListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private String[] options;
+    private Context context;
 
     public AMainNavigationListAdapter(Context context) {
+        this.context = context;
         inflater = LayoutInflater.from(context);
         options = context.getResources().getStringArray(R.array.drawer_list);
     }
@@ -45,6 +49,9 @@ public class AMainNavigationListAdapter extends BaseAdapter {
 
         holder.image = (ImageView) view.findViewById(R.id.amain_navigation_list_item_image);
         holder.text = (TextView) view.findViewById(R.id.amain_navigation_list_item_text);
+
+        Typeface robotoMedium = Typeface.createFromAsset(context.getAssets(), FontsUtil.RobotoMedium);
+        holder.text.setTypeface(robotoMedium);
 
         switch (position) {
             case 1:
