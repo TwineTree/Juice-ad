@@ -62,6 +62,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (googleApiClient != null) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
