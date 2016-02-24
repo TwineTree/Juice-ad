@@ -243,7 +243,7 @@ public class VideoActivity extends AppCompatActivity implements View.OnClickList
             case R.id.activity_video_done:
                 QuestionInputDialogFragment dialogFragment = QuestionInputDialogFragment.newInstance("",
                         getResources().getString(R.string.get_video_tag), extras, videoUri);
-                dialogFragment.show(getFragmentManager(),
+                dialogFragment.show(getSupportFragmentManager(),
                         getResources().getString(R.string.questions_input_tag));
                 break;
         }

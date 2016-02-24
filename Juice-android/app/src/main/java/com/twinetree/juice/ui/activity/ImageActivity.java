@@ -72,7 +72,7 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             case R.id.activity_image_done:
                 QuestionInputDialogFragment dialogFragment = QuestionInputDialogFragment.newInstance(
                         getResources().getString(R.string.get_image_tag), "", extras, null);
-                dialogFragment.show(getFragmentManager(),
+                dialogFragment.show(getSupportFragmentManager(),
                         getResources().getString(R.string.questions_input_tag));
                 break;
         }

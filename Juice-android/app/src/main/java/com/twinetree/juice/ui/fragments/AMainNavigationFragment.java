@@ -9,19 +9,25 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.twinetree.juice.R;
+import com.twinetree.juice.ui.activity.MainActivity;
 import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
 import com.twinetree.juice.util.DimensionUtil;
 
-public class AMainNavigationFragment extends Fragment {
+public class AMainNavigationFragment extends Fragment implements ListView.OnItemClickListener {
+
+    private final String MAIN_FRAGMENT_TAG = "MAIN-FRAGMENT";
 
     private static final String PREF_FILE_NAME_TAG = "PREF-FILE-NAME";
     public static final String KEY_USER_LEARNED_DRAWER_TAG = "KEY-USER-LEARNED-DRAWER";
+
 
     private boolean userLearnedDrawer;
     private boolean fromSavedInstanceState;
@@ -101,11 +107,21 @@ public class AMainNavigationFragment extends Fragment {
         }
         mDrawerLayout.setDrawerListener(mDrawerToggle);*/
 
+        listView.setOnItemClickListener(this);
         this.drawerLayout.post(new Runnable() {
             @Override
             public void run() {
                 drawerToggle.syncState();
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 2:
+                MainActivity.addFragment(new MyQuestionsFragment(), MAIN_FRAGMENT_TAG);
+                break;
+        }
     }
 }

@@ -58,30 +58,27 @@
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item_text"
-            fab:fab_label="Text"
             fab:fab_size="mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_dark"
-            android:src="@drawable/fab_add" />
+            android:background="@color/LIGHT_RED"
+            android:src="@mipmap/ic_communication_textsms" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item_image"
-            fab:fab_label="Image"
             fab:fab_size="mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_dark"
-            android:src="@drawable/fab_add" />
+            android:background="@color/LIGHT_RED"
+            android:src="@mipmap/ic_image_camera_alt" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item_video"
-            fab:fab_label="Video"
             fab:fab_size="mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_dark"
-            android:src="@drawable/fab_add" />
+            android:background="@color/LIGHT_RED"
+            android:src="@mipmap/ic_av_videocam" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

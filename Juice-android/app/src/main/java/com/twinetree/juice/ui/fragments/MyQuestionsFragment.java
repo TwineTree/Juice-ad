@@ -6,26 +6,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.github.clans.fab.FloatingActionButton;
-import com.twinetree.juice.MyApplication;
 import com.twinetree.juice.R;
-import com.twinetree.juice.api.Url;
 import com.twinetree.juice.ui.activity.ImageActivity;
 import com.twinetree.juice.ui.activity.VideoActivity;
-import com.twinetree.juice.util.JsonBearerRequest;
 
 import org.json.JSONObject;
 

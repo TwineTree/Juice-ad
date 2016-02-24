@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -57,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     private final String VIDEO_URL_TAG = "VIDEO-URL";
 
     private String[] options;
-    private DrawerLayout drawerLayout;
+    private static DrawerLayout drawerLayout;
     private ListView drawerList;
-    private FragmentManager fragmentManager;
+    private static android.support.v4.app.FragmentManager fragmentManager;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         setContentView(R.layout.activity_main);
 
         options = getResources().getStringArray(R.array.drawer_list);
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction()
                 .add(R.id.activity_main_frame, new AMainFragment(), MAIN_FRAGMENT_TAG)
@@ -97,6 +98,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+    }
+
+    public static void addFragment(Fragment fragment, String tag) {
+        fragmentManager.beginTransaction()
+                .add(R.id.activity_main_frame, fragment, tag)
+                .addToBackStack(null)
+                .commit();
+        //drawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override
