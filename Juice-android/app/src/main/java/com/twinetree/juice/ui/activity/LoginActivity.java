@@ -30,6 +30,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.twinetree.juice.R;
 import com.twinetree.juice.datasets.User;
+import com.twinetree.juice.network.BasicRequest;
 import com.twinetree.juice.util.GoogleUtil;
 
 import java.io.File;
@@ -62,10 +63,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (googleApiClient != null) {
-            startActivity(new Intent(this, MainActivity.class));
-        }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
@@ -178,12 +175,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
                 String accountName = Plus.AccountApi.getAccountName(googleApiClient);
                 String avatarUrl = Plus.PeopleApi.getCurrentPerson(googleApiClient).getImage().getUrl();
+                String id = Plus.PeopleApi.getCurrentPerson(googleApiClient).getId();
                 //String coverUrl = Plus.PeopleApi.getCurrentPerson(googleApiClient).getCover().getCoverPhoto().getUrl();
 
                 User user = new User(this);
 
                 user.setAccountName(accountName);
                 user.setAvatarUrl(avatarUrl);
+                user.setId(id);
 
                 getGoogleAuthToken();
             }
@@ -271,7 +270,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             User.setAccessToken(s);
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            User user = new User(LoginActivity.this);
+            user.setUserLogin(true);
+            BasicRequest.execute(LoginActivity.this);
             Log.i(TAG, s);
         }
     }
