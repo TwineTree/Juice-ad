@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.twinetree.juice.R;
 import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
+import com.twinetree.juice.util.DimensionUtil;
 
 public class AMainNavigationFragment extends Fragment {
 
@@ -60,7 +61,10 @@ public class AMainNavigationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_amain_navigation, container, false);
+        View view = inflater.inflate(R.layout.fragment_amain_navigation, container, false);
+        ListView list = (ListView) view.findViewById(R.id.activity_main_drawer_list);
+
+        return view;
     }
 
     public void setUp(int fragmentId, final DrawerLayout drawerLayout, Toolbar toolbar, String name, String email,
