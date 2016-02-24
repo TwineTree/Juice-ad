@@ -2,6 +2,7 @@ package com.twinetree.juice.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.twinetree.juice.R;
+import com.twinetree.juice.datasets.User;
 import com.twinetree.juice.util.FontsUtil;
+import com.twinetree.juice.util.ImageUtil;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AMainNavigationListAdapter extends BaseAdapter {
 
@@ -48,7 +53,14 @@ public class AMainNavigationListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (position == 0) {
-            return inflater.inflate(R.layout.header_layout, null);
+            View view = inflater.inflate(R.layout.header_layout, null);
+            User user = new User(context);
+
+            CircleImageView avatar = (CircleImageView) view.findViewById(R.id.header_layout_avatar);
+
+            ImageUtil.load(Uri.parse(user.getAvatarUrl()), avatar, context);
+
+            return view;
         }
         View view = inflater.inflate(R.layout.amain_navigation_list_item, null);
         Holder holder = new Holder();

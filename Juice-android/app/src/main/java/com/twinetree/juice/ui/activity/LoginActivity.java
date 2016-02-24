@@ -172,8 +172,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         try {
             if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
                 String accountName = Plus.AccountApi.getAccountName(googleApiClient);
+                String avatarUrl = Plus.PeopleApi.getCurrentPerson(googleApiClient).getImage().getUrl();
+                //String coverUrl = Plus.PeopleApi.getCurrentPerson(googleApiClient).getCover().getCoverPhoto().getUrl();
+
                 User user = new User(this);
+
                 user.setAccountName(accountName);
+                user.setAvatarUrl(avatarUrl);
+
+                getGoogleAuthToken();
             }
         } catch (Exception e) {
             Log.i("jbefb", e.getMessage());
@@ -258,6 +265,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            User.setAccessToken(s);
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
             Log.i(TAG, s);
         }
     }
