@@ -19,7 +19,7 @@ import java.util.Date;
 public class BasicRequest {
 
     public static void execute(final Context context) {
-        User user = new User(context);
+        final User user = new User(context);
         String url = "http://joos.azurewebsites.net/api/Account/ExternalLogin?provider=Google&accessToken="
                 + User.getAccessToken() + "&id=" + user.getGoogleId();
 
@@ -31,8 +31,13 @@ public class BasicRequest {
                             JSONObject object = new JSONObject(response);
                             AuthUtil auth = new AuthUtil(context);
 
-                            String accessToken = object.getJSONObject("result").getString("myAccessToken");
+                            JSONObject result = object.getJSONObject("result");
+
+                            String accessToken = result.getString("myAccessToken");
+                            int userId = result.getInt("userID");
+
                             User.setSessionToken(accessToken);
+                            user.setId(userId);
                             auth.setTokenTime(new Date().toString());
                             context.startActivity(new Intent(context, MainActivity.class));
 

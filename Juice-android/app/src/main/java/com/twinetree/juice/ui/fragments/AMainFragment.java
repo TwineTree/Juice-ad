@@ -61,7 +61,7 @@ public class AMainFragment extends Fragment {
 
         if (NetworkUtil.isConnected(getActivity().getApplicationContext())) {
             progressBar.setVisibility(View.VISIBLE);
-            BearerRequest request = new BearerRequest(Request.Method.GET, Url.getQuestions(0, 10),
+            BearerRequest request = new BearerRequest(Request.Method.GET, Url.getQuestions(0, 10, -1),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {

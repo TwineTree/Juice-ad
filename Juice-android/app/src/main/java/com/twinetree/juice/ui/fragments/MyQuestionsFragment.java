@@ -18,6 +18,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.twinetree.juice.R;
 import com.twinetree.juice.ui.activity.ImageActivity;
 import com.twinetree.juice.ui.activity.VideoActivity;
+import com.twinetree.juice.ui.adapter.MyQuestionsListAdapter;
 
 import org.json.JSONObject;
 
@@ -58,6 +59,8 @@ public class MyQuestionsFragment extends Fragment implements View.OnClickListene
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         questionList.setLayoutManager(layoutManager);
+
+        questionList.setAdapter(new MyQuestionsListAdapter(getContext()));
 
         text.setOnClickListener(this);
         image.setOnClickListener(this);

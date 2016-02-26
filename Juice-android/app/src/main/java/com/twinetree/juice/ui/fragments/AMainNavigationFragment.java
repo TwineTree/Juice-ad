@@ -16,9 +16,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.twinetree.juice.MyApplication;
 import com.twinetree.juice.R;
+import com.twinetree.juice.api.ApiResponse;
+import com.twinetree.juice.api.Url;
+import com.twinetree.juice.datasets.User;
 import com.twinetree.juice.ui.activity.MainActivity;
 import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
+import com.twinetree.juice.util.BearerRequest;
 import com.twinetree.juice.util.DimensionUtil;
 
 public class AMainNavigationFragment extends Fragment implements ListView.OnItemClickListener {
@@ -120,8 +128,31 @@ public class AMainNavigationFragment extends Fragment implements ListView.OnItem
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 2:
-                MainActivity.addFragment(new MyQuestionsFragment(), MAIN_FRAGMENT_TAG);
+                getMyQuestions();
                 break;
         }
     }
+
+    private void getMyQuestions() {
+        User user = new User(getContext());
+        BearerRequest request = new BearerRequest(Request.Method.GET, Url.getQuestions(0, 10, user.getId()),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        ApiResponse.setMyQuestionsResponse(response);
+
+                        MainActivity.addFragment(new MyQuestionsFragment(), MAIN_FRAGMENT_TAG);
+
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        MyApplication.queue.add(request);
+    }
+
 }

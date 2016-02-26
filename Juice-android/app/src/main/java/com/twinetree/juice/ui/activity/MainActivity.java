@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -25,7 +26,9 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.twinetree.juice.MyApplication;
 import com.twinetree.juice.R;
+import com.twinetree.juice.api.ApiResponse;
 import com.twinetree.juice.api.Url;
+import com.twinetree.juice.datasets.User;
 import com.twinetree.juice.ui.adapter.AMainNavigationListAdapter;
 import com.twinetree.juice.ui.fragments.AMainFragment;
 import com.twinetree.juice.ui.fragments.AMainNavigationFragment;
@@ -57,12 +60,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     private final String IMAGE_URL_TAG = "IMAGE-URL";
     private final String VIDEO_URL_TAG = "VIDEO-URL";
 
-    private String[] options;
     private static DrawerLayout drawerLayout;
-    private ListView drawerList;
     private static android.support.v4.app.FragmentManager fragmentManager;
+
+    private String[] options;
+    private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
+    private ProgressBar loading;
 
     private final String MAIN_FRAGMENT_TAG = "MAIN-FRAGMENT";
 
@@ -73,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
         options = getResources().getStringArray(R.array.drawer_list);
         fragmentManager = getSupportFragmentManager();
+
+        loading = (ProgressBar) findViewById(R.id.activity_main_loading);
 
         fragmentManager.beginTransaction()
                 .add(R.id.activity_main_frame, new AMainFragment(), MAIN_FRAGMENT_TAG)
@@ -112,13 +119,35 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 2:
-                fragmentManager.beginTransaction()
-                        .add(R.id.activity_main_frame, new MyQuestionsFragment(), MAIN_FRAGMENT_TAG)
-                        .addToBackStack(null)
-                        .commit();
-                drawerLayout.closeDrawer(Gravity.LEFT);
+                loading.setVisibility(View.VISIBLE);
+                getMyQuestions();
                 break;
         }
+    }
+
+    private void getMyQuestions() {
+        User user = new User(MainActivity.this);
+        BearerRequest request = new BearerRequest(Request.Method.GET, Url.getQuestions(0, 10, user.getId()),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        loading.setVisibility(View.GONE);
+
+                        ApiResponse.setMyQuestionsResponse(response);
+
+                        fragmentManager.beginTransaction()
+                                .add(R.id.activity_main_frame, new MyQuestionsFragment(), MAIN_FRAGMENT_TAG)
+                                .addToBackStack(null)
+                                .commit();
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        MyApplication.queue.add(request);
     }
 
     @Override
