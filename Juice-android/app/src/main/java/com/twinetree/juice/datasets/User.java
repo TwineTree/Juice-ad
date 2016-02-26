@@ -12,6 +12,7 @@ public class User {
     private final String EMAIL_TAG = BASE + "EMAIL";
     private final String ID_TAG = BASE + "ID";
     private final String IS_USER_LOGIN_TAG = BASE + "IS-USER-LOGIN";
+    private final String GOOGLE_ID_TAG = BASE + "GOOGLE-ID";
 
     private static String accessToken;
     private static String sessionToken;
@@ -23,6 +24,10 @@ public class User {
     }
 
     //  GETTERS
+    public String getGoogleId() {
+        return preferences.getString(GOOGLE_ID_TAG, "");
+    }
+
     public boolean isUserLogin() {
         return preferences.getBoolean(IS_USER_LOGIN_TAG, false);
     }
@@ -31,8 +36,8 @@ public class User {
         return sessionToken;
     }
 
-    public String getId() {
-        return preferences.getString(ID_TAG, "");
+    public int getId() {
+        return preferences.getInt(ID_TAG, 0);
     }
 
     public static String getAccessToken() {
@@ -52,6 +57,12 @@ public class User {
     }
 
     //  SETTERS
+    public void setGoogleId(String googleId) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(GOOGLE_ID_TAG, googleId);
+        editor.apply();
+    }
+
     public void setUserLogin(Boolean isLoggedIn) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(IS_USER_LOGIN_TAG, isLoggedIn);
@@ -62,9 +73,9 @@ public class User {
         sessionToken = mSessionToken;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(ID_TAG, id);
+        editor.putInt(ID_TAG, id);
         editor.apply();
     }
 

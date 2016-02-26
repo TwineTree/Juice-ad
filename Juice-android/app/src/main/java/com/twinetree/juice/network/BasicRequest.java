@@ -21,7 +21,7 @@ public class BasicRequest {
     public static void execute(final Context context) {
         User user = new User(context);
         String url = "http://joos.azurewebsites.net/api/Account/ExternalLogin?provider=Google&accessToken="
-                + User.getAccessToken() + "&id=" + user.getId();
+                + User.getAccessToken() + "&id=" + user.getGoogleId();
 
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {

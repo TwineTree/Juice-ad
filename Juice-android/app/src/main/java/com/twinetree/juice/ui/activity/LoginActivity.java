@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                 user.setAccountName(accountName);
                 user.setAvatarUrl(avatarUrl);
-                user.setId(id);
+                user.setGoogleId(id);
 
                 getGoogleAuthToken();
             }
